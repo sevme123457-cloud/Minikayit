@@ -43,10 +43,13 @@ jobs:
           pip install buildozer
           pip install cython
 
-      - name: APK oluştur
-        run: |
-          buildozer init || true
-          buildozer -v android debug
+    - name: APK oluştur
+  run: |
+    export ANDROID_HOME=$HOME/android-sdk
+    export ANDROIDSDK=$HOME/android-sdk
+    export PATH=$PATH:$ANDROID_HOME/platform-tools
+    buildozer init || true
+    buildozer -v android debug
 
       - name: APK yükle
         uses: actions/upload-artifact@v4
