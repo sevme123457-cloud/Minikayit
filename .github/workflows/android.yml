@@ -12,18 +12,32 @@ jobs:
     - name: Repo indir
       uses: actions/checkout@v3
 
+    - name: Java kur
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
     - name: Python kur
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
-    - name: Paketleri kur
+    - name: Sistem paketleri
       run: |
-        pip install buildozer
-        pip install cython
+        sudo apt update
+        sudo apt install -y zip unzip git build-essential
+        sudo apt install -y python3-pip openjdk-17-jdk
 
-    - name: APK build
-      run: buildozer android debug
+    - name: Python paketleri
+      run: |
+        pip install --upgrade pip
+        pip install buildozer cython
+
+    - name: Build APK
+      run: |
+        buildozer init || true
+        buildozer android debug
 
     - name: APK yükle
       uses: actions/upload-artifact@v3
